@@ -56,10 +56,68 @@ main {
     margin: 0 auto;
 }
 
+
+
 footer {
     background-color: #4c89ff;
     color: white;
     text-align: center;
     padding: 1rem 0;
     margin-top: 2rem;
+}
+/* Quiz Game */
+#bar-container {
+    width: 100%;
+    background: #ddd;
+    height: 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+#energy-bar {
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    transition: 0.4s ease-in-out;
+}
+
+#quiz-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #cfcfcf;
+}
+
+#options button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background: #ffdd94;
+}
+
+#options button:hover {
+    background: #ffca61;
+}
+
+#feedback {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+#next-btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: #4caf50;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
 }
