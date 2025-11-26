@@ -1,105 +1,81 @@
 const questions = [
     {
-        q: "What is one healthy way to reduce stress?",
-        options: [
-            "Bottling up your feelings",
-            "Talking to someone you trust",
-            "Ignoring problems",
-            "Staying up really late"
-        ],
-        answer: 1
+        description: "A condition involving persistent sadness, hopelessness, and loss of interest in activities.",
+        answer: "Depression",
+        choices: ["ADHD", "Anxiety", "Depression", "PTSD"]
     },
     {
-        q: "What is mindfulness?",
-        options: [
-            "Thinking about everything all at once",
-            "Focusing on the present moment",
-            "Trying to forget your problems",
-            "Doing homework extremely fast"
-        ],
-        answer: 1
+        description: "A disorder involving excessive worry, fear, and physical symptoms like a fast heartbeat.",
+        answer: "Anxiety",
+        choices: ["Anxiety", "Depression", "OCD", "Bipolar Disorder"]
     },
     {
-        q: "Which activity can improve mental wellbeing?",
-        options: [
-            "Regular exercise",
-            "Eating only junk food",
-            "Being on your phone 12 hours a day",
-            "Never going outside"
-        ],
-        answer: 0
+        description: "A disorder where someone experiences intrusive thoughts and repetitive behaviours.",
+        answer: "OCD",
+        choices: ["OCD", "ADHD", "PTSD", "Anxiety"]
     },
     {
-        q: "Who can you talk to if you're feeling overwhelmed?",
-        options: [
-            "A trusted adult",
-            "Nobody",
-            "Your pillow",
-            "Random strangers online"
-        ],
-        answer: 0
+        description: "A condition involving flashbacks, nightmares, and stress after a traumatic event.",
+        answer: "PTSD",
+        choices: ["PTSD", "Depression", "Bipolar Disorder", "OCD"]
+    },
+    {
+        description: "A condition causing shifts between high energy moods and deep depression.",
+        answer: "Bipolar Disorder",
+        choices: ["Bipolar Disorder", "Anxiety", "ADHD", "PTSD"]
     }
 ];
 
 let current = 0;
-let energy = 0; // 0–100
-
-const questionText = document.getElementById("question");
-const optionsBox = document.getElementById("options");
-const feedback = document.getElementById("feedback");
-const nextBtn = document.getElementById("next-btn");
-const energyBar = document.getElementById("energy-bar");
 
 function loadQuestion() {
     const q = questions[current];
-    questionText.textContent = q.q;
-    optionsBox.innerHTML = "";
-    feedback.textContent = "";
-    nextBtn.classList.add("hidden");
 
-    q.options.forEach((opt, i) => {
+    document.getElementById("description").textContent = q.description;
+
+    const choicesBox = document.getElementById("choices");
+    choicesBox.innerHTML = "";
+
+    q.choices.forEach(choice => {
         const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.onclick = () => selectOption(i);
-        optionsBox.appendChild(btn);
+        btn.classList.add("choice-btn");
+        btn.textContent = choice;
+
+        btn.onclick = () => checkAnswer(choice);
+
+        choicesBox.appendChild(btn);
     });
+
+    document.getElementById("result").textContent = "";
 }
 
-function selectOption(selected) {
-    const correct = questions[current].answer;
+function checkAnswer(choice) {
+    const result = document.getElementById("result");
 
-    if (selected === correct) {
-        feedback.textContent = "✔ Correct!";
-        feedback.style.color = "green";
-        energy = Math.min(100, energy + 25);
+    if (choice === questions[current].answer) {
+        result.textContent = "Correct! 🎉";
+        result.style.color = "green";
     } else {
-        feedback.textContent = "✖ Not quite. Try the next one!";
-        feedback.style.color = "red";
-        energy = Math.max(0, energy - 10);
+        result.textContent = "Incorrect 😢";
+        result.style.color = "red";
     }
 
-    energyBar.style.width = energy + "%";
+    // Move to the next question after 1.5 seconds
+    setTimeout(() => {
+        current++;
 
-    // Disable buttons after selecting
-    Array.from(optionsBox.children).forEach(btn => {
-        btn.disabled = true;
-        btn.style.opacity = 0.7;
-    });
-
-    nextBtn.classList.remove("hidden");
+        if (current >= questions.length) {
+            endGame();
+        } else {
+            loadQuestion();
+        }
+    }, 1500);
 }
 
-nextBtn.onclick = () => {
-    current++;
+function endGame() {
+    document.getElementById("description").textContent = "You've completed the game!";
+    document.getElementById("choices").innerHTML = "";
+    document.getElementById("result").textContent = "";
+}
 
-    if (current >= questions.length) {
-        questionText.textContent = "Game complete! Great job 🎉";
-        optionsBox.innerHTML = "";
-        nextBtn.classList.add("hidden");
-        return;
-    }
-
-    loadQuestion();
-};
-
-loadQuestion();
+window.onload = loadQuestion;
